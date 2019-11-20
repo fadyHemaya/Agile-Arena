@@ -1,0 +1,19 @@
+{
+  "name": "agilearena",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fadyHemaya/Agile-Arena.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fadyHemaya/Agile-Arena/issues"
+  },
+  "homepage": "https://github.com/fadyHemaya/Agile-Arena#readme"
+}
