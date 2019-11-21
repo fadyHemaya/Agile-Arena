@@ -7,7 +7,7 @@ require('dotenv').config({path: __dirname + '/.env'})
 
 mongoose
   .connect(
-    process.env['MongoURI']
+    process.env['MongoURI'],{useUnifiedTopology: true,useNewUrlParser: true}
   )
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
