@@ -1,14 +1,16 @@
 const http = require('http');
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
 
-const hostname = '127.0.0.1';
-const port = 3000;
+require('dotenv').config({path: __dirname + '/.env'})
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
+mongoose
+  .connect(
+    process.env['MongoURI'],{useUnifiedTopology: true,useNewUrlParser: true}
+  )
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`Server up and running on port ${port}`));
