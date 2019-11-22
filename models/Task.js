@@ -51,8 +51,12 @@ const Task = new Schema({
   projectID:{
     type: mongoose.Schema.Types.ObjectId,
     ref:'Project'
+  },
+  sprintID:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Sprint'
   }
-
+  
   //still need to add sprint
 
 })
