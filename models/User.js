@@ -13,11 +13,11 @@ const User = new Schema({
   salt: String,
   firstName: {
     type: String,
-    required: true
+    required: false
   },
   lastName: {
     type: String,
-    required: true
+    required: false
   }
 
 })
@@ -44,11 +44,10 @@ User.methods.generateJWT = function () {
   }, 'secret');
 }
 
-User.methods.toAuthJSON = function() {
+User.methods.toAuthJSON = function () {
   return {
     _id: this._id,
-    email: this.email,
-    token: this.generateJWT(),
+    email: this.email
   };
 };
 module.exports = mongoose.model('Users', User)
