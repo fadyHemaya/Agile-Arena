@@ -11,7 +11,6 @@ const Project = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-
   description:{
     type:String,
     required:false
