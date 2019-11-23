@@ -7,8 +7,8 @@ const Users = mongoose.model('Users');
 require('../../config/passport')
 
 
-//POST new user route (optional, everyone has access)
-router.post('/signup', auth.optional, (req, res, next) => {
+
+router.post('/signup', auth.optional, async(req, res, next) => {
   const user = req.body.user;
 
   if(!user.email) {
@@ -26,10 +26,13 @@ router.post('/signup', auth.optional, (req, res, next) => {
       },
     });
   }
+  const ExUser = await Users.findOne({ email:user.email });
+  if (ExUser) return res.status(400).send("User already registered.");
+
 
   const finalUser = new Users(user);
 
-  finalUser.setPassword(user.password);
+  finalUser.setPassword(""+user.password);
 
   return finalUser.save()
     .then(() => res.json({ user: finalUser.toAuthJSON() }));
@@ -71,9 +74,10 @@ router.post('/login', auth.optional, (req, res, next) => {
   })(req, res, next);
 });
 
-//GET current route (required, only authenticated users have access)
+
 router.get('/current', auth.required, (req, res, next) => {
   const { payload: { id } } = req;
+  
 
   return Users.findById(id)
     .then((user) => {

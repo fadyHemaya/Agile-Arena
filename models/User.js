@@ -47,7 +47,8 @@ User.methods.generateJWT = function () {
 User.methods.toAuthJSON = function () {
   return {
     _id: this._id,
-    email: this.email
+    email: this.email,
+    token: this.generateJWT()
   };
 };
 module.exports = mongoose.model('Users', User)
