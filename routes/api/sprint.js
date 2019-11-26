@@ -6,7 +6,7 @@ const Sprints = mongoose.model('Sprints')
 
 
 
-router.post('/Create', auth.required, async (req, res, next) => {
+router.post('/', auth.required, async (req, res, next) => {
     const { payload: { id } } = req;
     const sprint = req.body.sprint;
     let exProject = await Projects.findById(req.query.projectID);
@@ -36,6 +36,43 @@ router.post('/Create', auth.required, async (req, res, next) => {
         return res.status(200).json({
 
             Sprint: 'Created Successfully'
+        },
+        );
+    }
+    else {
+        return res.status(422).json({
+            errors:
+                'Something went wrong , try again later'
+
+        });
+    }
+
+
+})
+
+router.delete('/', auth.required, async (req, res, next) => {
+    const { payload: { id } } = req;
+    let exSprint = await Sprints.findById(req.query.sprintID);
+    if (!exSprint) {
+        return res.status(422).json({
+            errors: {
+                Project: 'Invalid Sprint ID',
+            },
+        });
+    }
+    let exProject = await Projects.findById(exSprint.projectID);
+    if (exProject.owner != id) {
+        return res.status(422).json({
+            errors: {
+                Owner: 'Unathorized',
+            },
+        });
+    }
+    let finalSprint = await Sprints.findByIdAndRemove(req.query.sprintID)
+    if (finalSprint) {
+        return res.status(200).json({
+
+            Sprint: 'Deleted Successfully'
         },
         );
     }
