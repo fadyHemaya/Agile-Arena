@@ -26,7 +26,7 @@ router.post('/signup', auth.optional, async(req, res, next) => {
       },
     });
   }
-  const ExUser = await Users.findOne({ email:user.email });
+  const ExUser = await Users.findOne({ email:user.email.toLowerCase() });
   if (ExUser) return res.status(400).send("User already registered.");
 
 

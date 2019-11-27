@@ -1,23 +1,25 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
 
 const User = new Schema({
-
+ 
   email: {
+    type: String,
+    required: true,
+    lowercase: true
+  },
+  password: {
     type: String,
     required: true
   },
-  hash: String,
-  salt: String,
-  firstName: {
-    type: String,
-    required: false
+
+  firstName:{
+    type:String,
+    required:true
   },
-  lastName: {
-    type: String,
-    required: false
+  lastName:{
+      type:String,
+      required:true
   }
 
 })
@@ -38,7 +40,7 @@ User.methods.generateJWT = function () {
   expirationDate.setDate(today.getDate() + 60);
 
   return jwt.sign({
-    email: this.email,
+    email: this.email.toLowerCase(),
     id: this._id,
     exp: parseInt(expirationDate.getTime() / 1000, 10),
   }, 'secret');
@@ -47,7 +49,7 @@ User.methods.generateJWT = function () {
 User.methods.toAuthJSON = function () {
   return {
     _id: this._id,
-    email: this.email,
+    email: this.email.toLowerCase(),
     token: this.generateJWT()
   };
 };
