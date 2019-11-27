@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const Project = new Schema({
- 
+
   name: {
     type: String,
     required: true
@@ -15,14 +15,15 @@ const Project = new Schema({
     type:String,
     required:false
   },
-  team:{
-    type: [
-         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ]
-  }
+  team: [{
+    userID: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
+    activated:Boolean
+  }]
 
 })
 module.exports = mongoose.model('Projects', Project)

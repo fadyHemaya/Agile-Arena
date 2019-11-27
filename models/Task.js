@@ -8,7 +8,8 @@ const Task = new Schema({
 //   Story, Bug, Task
   type: {
     type: String,
-    required: true
+    enum:['Story','Bug','Task'],
+    default: 'Task'
   },
   name: {
     type: String,
@@ -37,8 +38,8 @@ const Task = new Schema({
 // Enum
 // todo, in process, completed
   status:{
-      type: String,
-      required: false
+    enum:['ToDo','InProcess','Completed'],
+    default: 'ToDo'
   },
   dateCreated:{
       type: Date,
