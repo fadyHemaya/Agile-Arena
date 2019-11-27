@@ -38,6 +38,7 @@ const Task = new Schema({
 // Enum
 // todo, in process, completed
   status:{
+    type: String,
     enum:['ToDo','InProcess','Completed'],
     default: 'ToDo'
   },
