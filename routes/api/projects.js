@@ -30,11 +30,11 @@ router.post("/", auth.required,(req, res) => {
     .catch(err => res.status(400).json({ error: "failed to add item" }));
 });
 
-router.delete("/:id", auth.required,async (req, res) => {
-  
+router.delete("/", auth.required,async (req, res) => {
+  const projectID = req.query.projectID;
   const { payload: { id } } = req;
 
-  const proj = await project.findOne({ _id: req.params.id });
+  const proj = await project.findOne({ _id: projectID });
   if (!proj) {
     res.json({
       message: "project not found"
