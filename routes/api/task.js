@@ -3,6 +3,7 @@ const router = require('express').Router();
 const auth = require('../auth');
 const Projects = mongoose.model('Projects');
 const Tasks = mongoose.model('Tasks')
+const mailer = require('../mail')
 const Users = mongoose.model('Users')
 
 
@@ -40,6 +41,11 @@ router.post('/', auth.required, async (req, res, next) => {
         "dateFinished": task.dateFinished,
         "projectID": req.query.projectID,
         "sprintID": task.sprintID
+    }
+    if(task.asignee)
+    {
+        let text = "You have been assigned to new Task "+task.name+" in the project"+exProject.name
+        mailer.sendMail(asignee.email,"Notification from Agile Arena",text)
     }
     let finalTask = await Tasks.create(body)
     if (finalTask) {
@@ -92,12 +98,15 @@ router.put('/Assign', auth.required, async (req, res, next) => {
     }
     let finalTask = await Tasks.findByIdAndUpdate(req.query.taskID,{"asignee":asignee})
     if (finalTask) {
+        let text = "You have been assigned to new Task "+task.name+" in the project"+exProject.name
+        mailer.sendMail(asignee.email,"Notification from Agile Arena",text)
         return res.status(200).json({
 
             Task: 'Updated Successfully'
         },
         );
     }
+
     else {
         return res.status(422).json({
             errors:
