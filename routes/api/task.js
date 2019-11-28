@@ -44,8 +44,9 @@ router.post('/', auth.required, async (req, res, next) => {
     }
     if(task.asignee)
     {
-        let text = "You have been assigned to new Task "+task.name+" in the project"+exProject.name
-        mailer.sendMail(asignee.email,"Notification from Agile Arena",text)
+        const asigneeEmail = (await Users.findById(task.asignee)).email
+        let text = "You have been assigned to new Task "+task.name+" in the project "+exProject.name
+        mailer.sendMail(asigneeEmail,"Notification from Agile Arena",text)
     }
     let finalTask = await Tasks.create(body)
     if (finalTask) {
@@ -98,8 +99,8 @@ router.put('/Assign', auth.required, async (req, res, next) => {
     }
     let finalTask = await Tasks.findByIdAndUpdate(req.query.taskID,{"asignee":asignee})
     if (finalTask) {
-        let text = "You have been assigned to new Task "+task.name+" in the project"+exProject.name
-        mailer.sendMail(asignee.email,"Notification from Agile Arena",text)
+        let text = "You have been assigned to new Task "+task.name+" in the project "+exProject.name
+        mailer.sendMail(AsigneeI.email,"Notification from Agile Arena",text)
         return res.status(200).json({
 
             Task: 'Updated Successfully'

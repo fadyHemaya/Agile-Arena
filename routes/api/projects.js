@@ -13,7 +13,7 @@ router.post("/", auth.required, (req, res) => {
   } = req;
 
   // console.log('=====>' , req.userData)
-  const squad = [id];
+  const squad = [{"id":id,"activated":true}];
   const item = new project({
     name: req.body.name,
     owner: id,
