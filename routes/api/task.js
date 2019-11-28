@@ -63,8 +63,17 @@ router.post('/', auth.required, async (req, res, next) => {
 router.put('/Assign', auth.required, async (req, res, next) => {
     const { payload: { id } } = req;
     let asignee = req.query.asigneeID;
-    let projectID = await Tasks.findById(req.query.taskID).projectID;
-    let exProject = Projects.findById(projectID);
+    const task = await Tasks.findById(req.query.taskID)
+    if(!task)
+    {
+        return res.status(422).json({
+            errors: {
+                Task: 'Invalid task ID',
+            },
+        });
+    }
+    let projectID = task.projectID;
+    let exProject =await Projects.findById(projectID);
     let UserI = await exProject.team.find(o => o.userID === id && o.activated === true);
     let AsigneeI = await exProject.team.find(o => o.userID === asignee && o.activated === true);
     if (!UserI && exProject.owner != id) {
@@ -103,8 +112,17 @@ router.put('/Assign', auth.required, async (req, res, next) => {
 
 router.put('/', auth.required, async (req, res, next) => {
     const { payload: { id } } = req;
-    let projectID = await Tasks.findById(req.query.taskID).projectID;
-    let exProject = Projects.findById(projectID);
+    const task = await Tasks.findById(req.query.taskID)
+    if(!task)
+    {
+        return res.status(422).json({
+            errors: {
+                Task: 'Invalid task ID',
+            },
+        });
+    }
+    let projectID = task.projectID;
+    let exProject = await Projects.findById(projectID);
     let UserI = await exProject.team.find(o => o.userID === id && o.activated === true);
     if (!UserI && exProject.owner != id) {
         return res.status(422).json({

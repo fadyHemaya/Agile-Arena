@@ -4,7 +4,7 @@ const project = require("../../models/Project");
 const user = require("../../models/User");
 var cors = require("cors");
 const auth = require("../auth");
-
+const mailer = require( '../mail')
 router.use(cors());
 
 router.post("/", auth.required, (req, res) => {
