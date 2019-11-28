@@ -101,5 +101,34 @@ router.put('/Assign', auth.required, async (req, res, next) => {
 })
 
 
+router.put('/', auth.required, async (req, res, next) => {
+    const { payload: { id } } = req;
+    let projectID = await Tasks.findById(req.query.taskID).projectID;
+    let exProject = Projects.findById(projectID);
+    let UserI = await exProject.team.find(o => o.userID === id && o.activated === true);
+    if (!UserI && exProject.owner != id) {
+        return res.status(422).json({
+            errors: {
+                User: 'Unathorized',
+            },
+        });
+    }
+    let finalTask = await Tasks.findByIdAndUpdate(req.query.taskID,req.body.task)
+    if (finalTask) {
+        return res.status(200).json({
 
+            Task: 'Updated Successfully'
+        },
+        );
+    }
+    else {
+        return res.status(422).json({
+            errors:
+                'Something went wrong , try again later'
+
+        });
+    }
+
+
+})
 module.exports = router;
