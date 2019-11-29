@@ -11,17 +11,18 @@ const Project = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  description:{
-    type:String,
-    required:false
+  description: {
+    type: String,
+    required: false
   },
   team: [{
-    userID: 
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-      },
-      activated:Boolean
+    userID:
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+    ,
+    activated: Boolean
   }]
 
 })

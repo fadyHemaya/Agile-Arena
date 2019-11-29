@@ -4,7 +4,7 @@ const project = require("../../models/Project");
 const user = require("../../models/User");
 var cors = require("cors");
 const auth = require("../auth");
-
+const mailer = require( '../mail')
 router.use(cors());
 
 router.post("/", auth.required, (req, res) => {
@@ -13,7 +13,7 @@ router.post("/", auth.required, (req, res) => {
   } = req;
 
   // console.log('=====>' , req.userData)
-  const squad = [id];
+  const squad = [{"id":id,"activated":true}];
   const item = new project({
     name: req.body.name,
     owner: id,
