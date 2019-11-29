@@ -16,13 +16,12 @@ const Project = new Schema({
     required:false
   },
   team: [{
-    userID: [
+    userID: 
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-      }
-    ],
-    activated:Boolean
+      },
+      activated:Boolean
   }]
 
 })

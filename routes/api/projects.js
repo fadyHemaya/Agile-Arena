@@ -32,7 +32,7 @@ router.post("/", auth.required, (req, res) => {
 });
 
 router.delete("/", auth.required, async (req, res) => {
-  console.log("entered =============");
+
 
   const projectID = req.query.projectID;
   const {

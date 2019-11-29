@@ -3,6 +3,7 @@ const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../auth');
 const Users = mongoose.model('Users');
+const project = require("../../models/Project");
 
 require('../../config/passport')
 
@@ -88,5 +89,39 @@ router.get('/current', auth.required, (req, res, next) => {
       return res.json({ user: user.toAuthJSON() });
     });
 });
+
+router.put('/invite', auth.required, async (req,res,next)=>{
+  const { payload: { id } } = req
+  const projectID = req.query.projectID
+  const recepient = req.query.recepient
+
+  const proj = await project.findOne({_id: projectID})
+  if(!proj){
+    res.status(404).json({message: 'Project not Found'})
+  }
+  else if(proj.owner != id){
+    res.status(401).json({message: 'Only owners can invite team members'})
+  }
+  else{
+    proj.team.map(element => {
+      if(element.userID == recepient && element.activated == true)
+        res.status(200).json({message: 'Already in Team!'})
+      else if (element.userID == recepient){
+        res.status(200).json({message: 'invite is already sent'})
+      }
+      else{
+        const arr = JSON.parse(JSON.stringify(proj.team))
+        arr.push({userID: recepient,
+          activated: false
+        })
+
+        project.updateOne({_id: projectID}, {team: arr}, err=>console.log(err))
+
+        //send email
+      }
+    })
+
+  }
+})
 
 module.exports = router;
