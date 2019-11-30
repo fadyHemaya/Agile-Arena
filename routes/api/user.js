@@ -131,7 +131,7 @@ router.put("/invite", auth.required, async (req, res, next) => {
           "Agile Arena Invitation to" + proj.name,
           "Hi" +
             recepient.name +
-            ", you have been invited to contribute to a project follow the link to accept. localhost:3000/api/user/accept?projectID=" +
+            ", you have been invited to contribute to a project follow the link to accept. https://localhost:3000/api/user/accept?projectID=" +
             projectID
         );
         res.status(200).json({
