@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import login from "./pages/login";
+import signup from './pages/signup'
+import createTask from './pages/createTask'
 import './App.css';
 
 function App() {
@@ -15,6 +17,10 @@ function App() {
       />
       <Switch>
       <Route exact path="/login" component={login} />
+      <Route exact path="/signup" component={signup} />
+      <Route exact path="/createTask" component={createTask} />
+
+
       <Route  path="*" render={props => (<React.Fragment >
         <h1>Error 404!</h1>
         <h2>Page not found </h2>
