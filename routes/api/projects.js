@@ -59,6 +59,36 @@ router.delete("/", auth.required, async (req, res) => {
   }
 });
 
+
+router.get('/team', auth.required, async (req,res)=>{
+  const projectID = req.query.projectID;
+  const {
+    payload: { id }
+  } = req;
+
+  const team  = await project.findOne({ _id: projectID }).team
+  let flag = false
+
+  team.map(element => {
+    if(element.userID == id){
+      flag = true
+    } 
+  })
+
+  if(flag){
+    res.status(200).json({
+      team: team,
+      message:"team given"
+    })
+  }
+  else{
+    res.status(401).json({
+      message: "you are not in this team"
+    })
+  }
+
+})
+
 // router.post('/user' , (req,res)=>{
 //     const item = new user({
 //         firstName: 'ramy',

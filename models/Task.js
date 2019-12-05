@@ -20,8 +20,9 @@ const Task = new Schema({
     required:false
   },
   priority:{
-      type:Number,
-      required:false
+      type: String,
+    enum:['High','Medium','Low'],
+    default: 'Medium'
   },
   description:{
       type:String,
