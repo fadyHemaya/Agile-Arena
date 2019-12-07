@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import TaskElement from '../components/taskElement'
+import TaskElement from '../components/TaskElement'
 import { Input, Form, Label, Button, Row, Col } from 'reactstrap'
 const url = require('../config/url')
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import login from "./pages/login";
-import runningSprint from "./pages/runningSprint"
+import runningSprint from "./pages/RunningSprint"
 import backlog from './pages/backlog'
 
 
