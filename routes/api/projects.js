@@ -4,7 +4,7 @@ const project = require("../../models/Project");
 const user = require("../../models/User");
 var cors = require("cors");
 const auth = require("../auth");
-const mailer = require( '../mail')
+const mailer = require("../mail");
 router.use(cors());
 
 router.post("/", auth.required, (req, res) => {
@@ -13,7 +13,7 @@ router.post("/", auth.required, (req, res) => {
   } = req;
 
   // console.log('=====>' , req.userData)
-  const squad = [{"userID":id,"activated":true}];
+  const squad = [{ userID: id, activated: true }];
   const item = new project({
     name: req.body.name,
     owner: id,
@@ -32,8 +32,6 @@ router.post("/", auth.required, (req, res) => {
 });
 
 router.delete("/", auth.required, async (req, res) => {
-
-
   const projectID = req.query.projectID;
   const {
     payload: { id }
@@ -41,7 +39,7 @@ router.delete("/", auth.required, async (req, res) => {
 
   const proj = await project.findOne({ _id: projectID });
   if (!proj) {
-    res.json({
+    res.status(404).json({
       message: "project not found"
     });
   } else {
@@ -59,34 +57,36 @@ router.delete("/", auth.required, async (req, res) => {
   }
 });
 
+router.get("/team", auth.required, async (req, res) => {
 
-router.get('/team', auth.required, async (req,res)=>{
   const projectID = req.query.projectID;
   const {
     payload: { id }
   } = req;
 
-  const team  = await project.findOne({ _id: projectID }).team
-  let flag = false
+  const proj = await project.findOne({ _id: projectID })
 
-  team.map(element => {
-    if(element.userID == id){
-      flag = true
-    } 
+  res.status(200).json({
+    team: proj.team
   })
 
-  if(flag){
-    res.status(200).json({
-      team: team,
-      message:"team given"
-    })
-  }
-  else{
-    res.status(401).json({
-      message: "you are not in this team"
-    })
-  }
+  
+});
 
+router.get('/', auth.required, async (req,res)=>{
+  const {payload: { id }} = req;
+  const projects = await project.find({team: {$elemMatch: {userID:id, activated:true}}})
+
+  if(projects){
+    res.status(200).json({
+      projects: projects,
+      message:'Projects retrieved successfully'
+    })
+  }else{
+    res.status(200).json({
+      message:'You do not have any projects'
+    })
+  }
 })
 
 // router.post('/user' , (req,res)=>{

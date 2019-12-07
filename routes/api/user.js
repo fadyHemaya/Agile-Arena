@@ -88,38 +88,58 @@ router.get("/current", auth.required, (req, res, next) => {
       return res.sendStatus(400);
     }
 
-    return res.json({ user: user.toAuthJSON() });
+    return res.status(200).json({ userID: id, userName: user.name});
   });
 });
+
+router.get('/', auth.required, async (req,res) => {
+
+ 
+  const user = await Users.findById(req.query.userID)
+  res.status(200).json({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email
+  })
+
+})
 
 router.put("/invite", auth.required, async (req, res, next) => {
   const {
     payload: { id }
   } = req;
   const projectID = req.query.projectID;
-  const recepientID = req.query.recepientID;
+  const email = req.query.email;
 
   try {
     const proj = await project.findOne({ _id: projectID });
-    const recepient = await Users.findOne({ _id: recepientID });
+    const recepient = await Users.findOne({ email: email });
+
+    let flag = true
+
+    if(!recepient){
+      res.status(400).json({
+        message: 'user not registered'
+      })
+    }
 
     if (!proj) {
-      res.status(404).json({ message: "Project not Found" });
+      res.status(400).json({ message: "Project not Found" });
     } else if (proj.owner != id) {
       res.status(401).json({ message: "Only owners can invite team members" });
     } else {
       proj.team.map(element => {
-        console.log("=====>>>>>>>", element);
-        if (element.userID == recepientID && element.activated == true) {
-          res.status(200).json({ message: "Already in Team!" });
-          return;
-        } else if (element.userID == recepientID) {
-          res.status(200).json({ message: "invite is already sent" });
-          return;
+
+        if (element.userID.toString() == recepient._id.toString() && element.activated == true) {
+          flag = false
+          return res.status(400).json({ message: "Already in Team!" });
+        } else if (element.userID.toString() == recepient._id.toString()) {
+          return res.status(400).json({ message: "invite is already sent" });
         }
       });
+
       const arr = JSON.parse(JSON.stringify(proj.team));
-      arr.push({ userID: recepientID, activated: false });
+      arr.push({ userID: recepient._id, activated: false });
       project.updateOne({ _id: projectID }, { team: arr }, err =>
         console.log(err)
       );
@@ -135,7 +155,8 @@ router.put("/invite", auth.required, async (req, res, next) => {
             projectID
         );
         res.status(200).json({
-          message: "invite sent successfully"
+          message: "invite sent successfully",
+          user
         });
       } catch (err) {
         res.json({
@@ -146,7 +167,8 @@ router.put("/invite", auth.required, async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(400).json({
-      message: "error occured - invalid input"
+      message: "error occured - invalid input",
+      error: err
     });
   }
 });

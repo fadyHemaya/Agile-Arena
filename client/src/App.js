@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import login from "./pages/login";
 import signup from './pages/signup'
+import home from './pages/home'
+import invite from './pages/invite'
 import createTask from './pages/createTask'
 import './App.css';
 
@@ -16,8 +18,11 @@ function App() {
         crossorigin="anonymous"
       />
       <Switch>
+      <Route exact path="/home" component={home} />
       <Route exact path="/login" component={login} />
       <Route exact path="/signup" component={signup} />
+      <Route exact path="/invite" component={invite} />
+
       <Route exact path="/createTask" component={createTask} />
 
 

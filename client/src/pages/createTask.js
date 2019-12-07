@@ -28,15 +28,15 @@ export class createTask extends Component {
   constructor(props) {
     super(props);
     document.cookie = "projectID="+'5de26b85c06a9b2d602225a4'; //get dynamically
-    document.cookie = "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA3MjE0OTYsImlhdCI6MTU3NTUzNzQ5Nn0.xDoqpO6k2qZ_yOW_umi5_k1EtdVeZTphYJ4wxqlVMIQ"
+    document.cookie = "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA4NDg2MjQsImlhdCI6MTU3NTY2NDYyNH0.S8de9qN_M5M9bJRkAHcVZZ_CqNPjXB7VdfkVY0siySU"
 
-    console.log('test')
-    axios.get(url + 'api/project/team?projectID=' + this.getCookie('projectID'),
-    {
-        headers:{
-        'Authorization': this.getCookie('token')
-        }
-    }).then(res => console.log(res)).catch(err=>console.log())
+    // console.log('test')
+    // axios.get(url + 'api/project/team?projectID=' + this.getCookie('projectID'),
+    // {
+    //     headers:{
+    //     'Authorization': this.getCookie('token')
+    //     }
+    // }).then(res => console.log(res)).catch(err=>console.log())
 
   }
 
