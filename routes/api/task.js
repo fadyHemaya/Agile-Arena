@@ -7,7 +7,14 @@ const mailer = require('../mail')
 const Users = mongoose.model('Users')
 
 
-
+router.get('/GetTasksOfSprint', auth.required, async (req, res, next) => {
+    const sprintID = req.query.sprintID;
+    let Utasks = await Tasks.find({sprintID:sprintID})
+    if(Utasks)
+        return res.status(200).json({Tasks:Utasks})
+    else
+        return res.status(422).json({Error:'Can not find task'})
+})  
 router.post('/', auth.required, async (req, res, next) => {
     const { payload: { id } } = req;
     const task = req.body.task;
@@ -121,6 +128,7 @@ router.put('/Assign', auth.required, async (req, res, next) => {
 
 router.put('/', auth.required, async (req, res, next) => {
     const { payload: { id } } = req;
+
     const task = await Tasks.findById(req.query.taskID)
     if(!task)
     {

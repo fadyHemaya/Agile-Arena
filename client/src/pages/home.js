@@ -20,7 +20,7 @@ export class home extends Component {
       "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA3NzA2OTQsImlhdCI6MTU3NTU4NjY5NH0.a2IRtV4PMoBbgSUt9GQz32fQYBEzZfFFXoJr2mPPgZQ";
 
     axios
-      .get(url + "api/project", {
+      .get(url + "/api/project", {
         headers: {
           Authorization: this.getCookie("token")
         }
@@ -32,7 +32,7 @@ export class home extends Component {
       });
 
 
-      axios.get(url + "api/user/current", {
+      axios.get(url + "/api/user/current", {
         headers: {
           'Authorization': this.getCookie('token')
         }
@@ -82,7 +82,7 @@ export class home extends Component {
       description: document.getElementById("description").value
     }
 
-    axios.post(url + 'api/project/', body , {
+    axios.post(url + '/api/project/', body , {
       headers:{
         'Authorization': this.getCookie('token')
       }
