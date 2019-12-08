@@ -36,7 +36,8 @@ router.post("/", auth.required, (req, res) => {
     payload: { id }
   } = req;
 
-  const squad = [{ "userID": id, "activated": true }];
+  // console.log('=====>' , req.userData)
+  const squad = [{ userID: id, activated: true }];
   const item = new project({
     name: req.body.name,
     owner: id,
@@ -55,8 +56,6 @@ router.post("/", auth.required, (req, res) => {
 });
 
 router.delete("/", auth.required, async (req, res) => {
-
-
   const projectID = req.query.projectID;
   const {
     payload: { id }
@@ -81,6 +80,51 @@ router.delete("/", auth.required, async (req, res) => {
     }
   }
 });
+
+router.get("/team", auth.required, async (req, res) => {
+
+  const projectID = req.query.projectID;
+  const {
+    payload: { id }
+  } = req;
+
+  const proj = await project.findOne({ _id: projectID })
+
+  let flag = false
+  proj.team.map(element => {
+    if(element.userID.toString() == id.toString()){
+      flag = true
+    }
+  })
+  if(flag){
+      res.status(200).json({
+      team: proj.team
+    })
+  }
+  else{
+    res.status(401).json({
+      message:'you are not in this team'
+    })
+  }
+  
+  
+});
+
+router.get('/', auth.required, async (req,res)=>{
+  const {payload: { id }} = req;
+  const projects = await project.find({team: {$elemMatch: {userID:id, activated:true}}})
+
+  if(projects){
+    res.status(200).json({
+      projects: projects,
+      message:'Projects retrieved successfully'
+    })
+  }else{
+    res.status(200).json({
+      message:'You do not have any projects'
+    })
+  }
+})
 
 // router.post('/user' , (req,res)=>{
 //     const item = new user({

@@ -26,9 +26,8 @@ router.post('/', auth.required, async (req, res, next) => {
             },
         });
     }
-    let UserID = await exProject.team.find(o => o.userID === id && o.activated === true);
-
-    if (!UserID && exProject.owner != id) {
+    let UserID = await exProject.team.find(o => o.userID == id && o.activated == true);
+    if (!UserID && exProject.owner !== id) {
         return res.status(422).json({
             errors: {
                 User: 'Unathorized',
@@ -64,7 +63,7 @@ router.post('/', auth.required, async (req, res, next) => {
         );
     }
     else {
-        return res.status(422).json({
+        return res.status(424).json({
             errors:
                 'Something went wrong , try again later'
 
