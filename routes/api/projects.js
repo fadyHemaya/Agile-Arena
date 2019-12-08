@@ -68,9 +68,8 @@ router.get("/team", auth.required, async (req, res) => {
 
   let flag = false
   proj.team.map(element => {
-    if(element.userID.toString() == id/toString()){
+    if(element.userID.toString() == id.toString()){
       flag = true
-      break
     }
   })
   if(flag){
@@ -79,9 +78,9 @@ router.get("/team", auth.required, async (req, res) => {
     })
   }
   else{
-    res.status(401.json({
+    res.status(401).json({
       message:'you are not in this team'
-    }))
+    })
   }
   
   
