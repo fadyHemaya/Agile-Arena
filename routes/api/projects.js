@@ -24,7 +24,7 @@ router.get('/GetTasksOfProject', auth.required, async (req, res, next) => {
     });
   }
 
-  let Utasks = await Tasks.find({ projectID: projectID })
+  let Utasks = await Tasks.find({ projectID: projectID, sprintID:null })
   if (Utasks)
     return res.status(200).json( Utasks )
   else

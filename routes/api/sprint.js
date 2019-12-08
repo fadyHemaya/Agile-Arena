@@ -3,6 +3,27 @@ const router = require('express').Router();
 const auth = require('../auth');
 const Projects = mongoose.model('Projects');
 const Sprints = mongoose.model('Sprints')
+router.get('/', auth.required, async (req, res, next) => {
+    const {
+      payload: { id }
+    } = req;
+    const projectID = req.query.projectID;
+    const proj = await Projects.findById(projectID)
+    let EUser = await proj.team.find(o => o.userID === id && o.activated === true);
+    if (EUser) {
+      return res.status(422).json({
+        errors:
+          'Unauthorized'
+      });
+    }
+  
+    let USprints = await Sprints.find({ projectID: projectID })
+    if (USprints)
+      return res.status(200).json( USprints )
+    else
+      return res.status(422).json({ Error: 'Can not find Sprint' })
+  })
+  
 
 router.put('/StartSprint', auth.required, async (req, res, next) => {
     const {

@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import Axios from "axios";
 import TaskElement from '../components/TaskElement'
 import { Input, Form, Label, Button, Row, Col } from 'reactstrap'
+import { Redirect } from 'react-router-dom'
+
 const url = require('../config/url')
+
 
 export class tasks extends Component {
     state = {
@@ -176,6 +179,7 @@ export class tasks extends Component {
             });
         } catch (e) {
             console.log(e);
+            return <Redirect to='/login' />
         }
     }
 
