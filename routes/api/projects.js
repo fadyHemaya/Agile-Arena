@@ -66,10 +66,24 @@ router.get("/team", auth.required, async (req, res) => {
 
   const proj = await project.findOne({ _id: projectID })
 
-  res.status(200).json({
-    team: proj.team
+  let flag = false
+  proj.team.map(element => {
+    if(element.userID.toString() == id/toString()){
+      flag = true
+      break
+    }
   })
-
+  if(flag){
+      res.status(200).json({
+      team: proj.team
+    })
+  }
+  else{
+    res.status(401.json({
+      message:'you are not in this team'
+    }))
+  }
+  
   
 });
 

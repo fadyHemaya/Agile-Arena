@@ -148,15 +148,14 @@ router.put("/invite", auth.required, async (req, res, next) => {
       try {
         mailer.sendMail(
           recepient.email,
-          "Agile Arena Invitation to" + proj.name,
-          "Hi" +
+          "Agile Arena Invitation to " + proj.name, "Hi" +
             recepient.name +
-            ", you have been invited to contribute to a project follow the link to accept. https://localhost:3000/api/user/accept?projectID=" +
-            projectID
+            ", you have been invited to contribute to a project follow the link to accept. https//localhost:3000/api/user/accept?projectID=" +
+            projectID + "&userID=" + recepient._id
         );
         res.status(200).json({
           message: "invite sent successfully",
-          user
+          recepient
         });
       } catch (err) {
         res.json({
@@ -173,25 +172,27 @@ router.put("/invite", auth.required, async (req, res, next) => {
   }
 });
 
-router.get("/accept", auth.required, async (req, res) => {
-  const {
-    payload: { id }
-  } = req;
+router.get("/accept", auth.optional, async (req, res) => {
+  
 
   let flag = false;
   const projectID = req.query.projectID;
+  const id = req.query.userID
+
 
   const proj = await project.findOne({ _id: projectID });
+  console.log(proj)
+  console.log(id)
   let arr = new Array();
   let counter = 0;
 
   console.log();
   proj.team.map(element => {
-    if (element.userID == id && element.activated == true) {
+    if (element.userID.toString() == id.toString() && element.activated == true) {
       res.status(200).json({
         message: "you are already in team!"
       });
-    } else if (element.userID == id) {
+    } else if (element.userID.toString() == id.toString()) {
       flag = true;
       element.activated = true;
     }
@@ -221,19 +222,20 @@ router.put('/remove', auth.required, async (req,res) =>{
     payload: { id }
   } = req;
 
-  const user = req.query.user
   const projectID = req.query.projectID
+  console.log(projectID, '=======')
+  const userID = req.query.userID
   const proj = await project.findOne({
     _id: projectID
   })
-
-  if(proj.owner == id && user !== proj.owner){
+  if(proj){
+    if(proj.owner == id && userID !== proj.owner){
 
     let arr = new Array()
     let counter = 0
     proj.team.map(element => {
-      if(!(element.userID == user)){
-        arr[counter] = JSON.parse(JSON.stringify(element))
+      if(!(element.userID == userID)){
+        arr.push(JSON.parse(JSON.stringify(element)))
       }
       counter++
     })
@@ -245,8 +247,10 @@ router.put('/remove', auth.required, async (req,res) =>{
     res.status(401).json({
       message: 'only owners can remove team members and they cannot remove themselves'
     })
-  
-
+  }
+  else return res.status(404).json({
+    message: 'could not find project'
+  })
 })
 
 module.exports = router;

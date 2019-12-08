@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  Form,
-  Button,
-  Col,
-  Row,
-} from "react-bootstrap";
+import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 const url = require("../config/url");
 
@@ -27,41 +22,73 @@ export class createTask extends Component {
 
   constructor(props) {
     super(props);
-    document.cookie = "projectID="+'5de26b85c06a9b2d602225a4'; //get dynamically
-    document.cookie = "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA4NDg2MjQsImlhdCI6MTU3NTY2NDYyNH0.S8de9qN_M5M9bJRkAHcVZZ_CqNPjXB7VdfkVY0siySU"
+    document.cookie =
+      "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA4NDg2MjQsImlhdCI6MTU3NTY2NDYyNH0.S8de9qN_M5M9bJRkAHcVZZ_CqNPjXB7VdfkVY0siySU";
 
-    // console.log('test')
-    // axios.get(url + 'api/project/team?projectID=' + this.getCookie('projectID'),
-    // {
-    //     headers:{
-    //     'Authorization': this.getCookie('token')
-    //     }
-    // }).then(res => console.log(res)).catch(err=>console.log())
+    this.state = {
+      team: []
+    };
+
+    let arr = [];
+
+    axios
+      .get(url + "api/project/team?projectID=" + this.getCookie("projectID"), {
+        headers: {
+          Authorization: this.getCookie("token")
+        }
+      })
+      .then(res => {
+        res.data.team.map(member => {
+          axios
+            .get(url + "api/user?userID=" + member.userID, {
+              headers: {
+                Authorization: this.getCookie("token")
+              }
+            })
+            .then(result => {
+              arr.push({
+                userID: member.userID,
+                activated: member.activated,
+                name: result.data.firstName,
+                email: result.data.email
+              });
+
+              this.setState({
+                team: arr
+              });
+            })
+            .catch(error => console.log(error));
+        });
+      })
+      .catch(err => console.log(err));
 
   }
 
   submit = event => {
     event.preventDefault();
 
-    const projectID = this.getCookie("projectID")
+    const projectID = this.getCookie("projectID");
 
     const body = {
-        task:{
-            type: document.getElementById("type").value,
-            priority: document.getElementById("priority").value,
-            name: document.getElementById("name").value,
-            points: document.getElementById("points").value,
-            description: document.getElementById("description").value,
-            status:"ToDo"
+      task: {
+        type: document.getElementById("type").value,
+        priority: document.getElementById("priority").value,
+        name: document.getElementById("name").value,
+        points: document.getElementById("points").value,
+        description: document.getElementById("description").value,
+        status: "ToDo",
+        asignee: document.getElementById('asignee').value
+      }
+    };
+    axios
+      .post(url + "api/task?projectID=" + projectID, body, {
+        headers: {
+          Authorization: this.getCookie("token")
         }
-    }
-    axios.post(url + "api/task?projectID=" + projectID, body, {
-        headers : {
-        'Authorization': this.getCookie('token')
-    }
-    }).then(res => {
-        console.log(res)         
-      }).catch(err => console.log(err));
+      })
+      .then(res => {
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -77,36 +104,40 @@ export class createTask extends Component {
                 </Col>
               </Row>
               <Form className="shadow-lg p-3 mb-5 bg-white rounded w-75  p-3">
-                <Form.Row>
-                  <Form.Group as={Col} controlId="formGridEmail">
-                    <Form.Label> Name </Form.Label>
-                    <Form.Control
-                      required
-                      id="name"
-                      placeholder="Enter Task Name"
-                    />
-                  </Form.Group>
+                
+                  <Row>
+                    <Form.Group as={Col} controlId="formGridEmail">
+                      <Form.Label> Name </Form.Label>
+                      <Form.Control
+                        required
+                        id="name"
+                        placeholder="Enter Task Name"
+                      />
+                    </Form.Group>
 
-                  <Form.Group as={Col} controlId="formGridPassword">
-                    <Form.Label>Points</Form.Label>
-                    <Form.Control
-                      required
-                      id="points"
-                      placeholder="points"
-                      type="Number"
-                    />
-                  </Form.Group>
+                    <Form.Group as={Col} controlId="formGridPassword">
+                      <Form.Label>Points</Form.Label>
+                      <Form.Control
+                        required
+                        id="points"
+                        placeholder="points"
+                        type="Number"
+                      />
+                    </Form.Group>
+                  </Row>
+                  <Row>
+                  <Col>
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                      <Form.Label>Priority</Form.Label>
+                      <Form.Control as="select" id="priority">
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                      </Form.Control>
+                    </Form.Group>
+                    </Col>
 
-                  <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label>Priority</Form.Label>
-                    <Form.Control as="select" id="priority">
-                      <option>High</option>
-                      <option>Medium</option>
-                      <option>Low</option>
-                    </Form.Control>
-                  </Form.Group>
-                    <Form.Row/>
-                  <Form.Row>
+                    <Col>
                     <Form.Group controlId="exampleForm.ControlSelect1">
                       <Form.Label>Type</Form.Label>
                       <Form.Control as="select" id="type">
@@ -115,10 +146,26 @@ export class createTask extends Component {
                         <option>Task</option>
                       </Form.Control>
                     </Form.Group>
-                  </Form.Row>
-                </Form.Row>
+                    </Col>
+                </Row>
 
-                <Form.Row>
+                
+                    <Row>
+                      <Col>
+                      <Form.Group controlID="Asignee">
+                        <Form.Label>Asignee</Form.Label>
+                        <Form.Control as="select" id="asignee">
+                        <option>unassigned</option>
+                          {this.state.team.map(member => {
+                            const email = member.email
+                            const option = <option>{email}</option>
+                            return(option)
+                          })}
+                        </Form.Control>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
                   <Form.Group controlId="desc">
                     <Form.Label>description</Form.Label>
                     <Form.Control
@@ -128,7 +175,6 @@ export class createTask extends Component {
                       placeholder="description..."
                     />
                   </Form.Group>
-                </Form.Row>
 
                 <Button onClick={this.submit} variant="primary" type="submit">
                   Create Task

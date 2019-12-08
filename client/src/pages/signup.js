@@ -3,13 +3,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import {
   Form,
-  InputGroup,
   Button,
-  ButtonGroup,
-  FormControl,
   Col,
   Row,
-  Container,
   Alert
 } from "react-bootstrap";
 import { Redirect } from 'react-router-dom'

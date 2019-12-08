@@ -33,8 +33,8 @@ const Task = new Schema({
     ref: 'User'
   },
   asignee:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: String,
+    default: "unassigned"
   }, 
 // Enum
 // todo, in process, completed

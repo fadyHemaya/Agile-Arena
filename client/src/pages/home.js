@@ -14,7 +14,6 @@ export class home extends Component {
       userID: '',
     };
 
-    let counter = 0;
 
     document.cookie =
       "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA3NzA2OTQsImlhdCI6MTU3NTU4NjY5NH0.a2IRtV4PMoBbgSUt9GQz32fQYBEzZfFFXoJr2mPPgZQ";
