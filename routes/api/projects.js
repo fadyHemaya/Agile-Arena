@@ -4,11 +4,32 @@ const project = require("../../models/Project");
 const user = require("../../models/User");
 var cors = require("cors");
 const Tasks =require("../../models/Task")
+const Sprints =require("../../models/Sprint")
 const auth = require("../auth");
 const mailer = require('../mail')
 router.use(cors());
 
+router.get('/GetActiveTasksOfProject', auth.required, async (req, res, next) => {
+  const {
+    payload: { id }
+  } = req;
+  const projectID = req.query.projectID;
+  const proj = await project.findById(projectID)  
+  let EUser = await proj.team.find(o => o.userID === id && o.activated === true);
+  if (EUser) {
+    return res.status(422).json({
+      errors:
+        'Unauthorized'
+    });
+  }
+  let uSprint = await  Sprints.findOne({projectID:projectID,active:true})
 
+  let Utasks = await Tasks.find({ sprintID:uSprint._id })
+  if (Utasks)
+    return res.status(200).json( Utasks )
+  else
+    return res.status(422).json({ Error: 'Can not find task' })
+})
 
 router.get('/GetTasksOfProject', auth.required, async (req, res, next) => {
   const {

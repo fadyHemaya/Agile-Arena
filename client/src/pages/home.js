@@ -3,6 +3,8 @@ import axios from "axios";
 import ProjectCard from "../components/projectCard";
 import { Row, Col, Modal, Form, Button } from "react-bootstrap";
 import Chart from '../components/chart'
+import { Redirect } from 'react-router-dom'
+
 const url = require("../config/url");
 
 export class home extends Component {
@@ -16,8 +18,6 @@ export class home extends Component {
     };
 
 
-    document.cookie =
-      "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA3NzA2OTQsImlhdCI6MTU3NTU4NjY5NH0.a2IRtV4PMoBbgSUt9GQz32fQYBEzZfFFXoJr2mPPgZQ";
 
     axios
       .get(url + "/api/project", {
@@ -115,6 +115,10 @@ export class home extends Component {
   }
 
   render() {
+    if (!this.getCookie('Token')) {
+      return <Redirect to='/login' />
+  }
+
     return (
       <div>
         <Col>

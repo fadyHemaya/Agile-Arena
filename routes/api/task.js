@@ -93,9 +93,8 @@ router.post('/', auth.required, async (req, res, next) => {
     }
     if(task.asignee)
     {
-        const asigneeEmail = (await Users.findById(task.asignee)).email
         let text = "You have been assigned to new Task "+task.name+" in the project "+exProject.name
-        mailer.sendMail(asigneeEmail,"Notification from Agile Arena",text)
+        mailer.sendMail(task.asignee,"Notification from Agile Arena",text)
     }
     let finalTask = await Tasks.create(body)
     if (finalTask) {

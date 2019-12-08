@@ -4,6 +4,8 @@ import TaskElement from '../components/backlogTask'
 import { Input} from 'reactstrap'
 import {Button, Form, Label, Row, Col,Modal } from 'react-bootstrap'
 import SprintElement from '../components/SprintElement'
+import { Redirect } from 'react-router-dom'
+
 const url = require('../config/url')
 
 export class backlog extends Component {
@@ -38,10 +40,6 @@ export class backlog extends Component {
         try {
 
             let projectID = this.getCookie('projectID')
-            if (!projectID) {
-                document.cookie = "projectID=" + "5debb5db4017ab1e587d4d52"
-                return;
-            }
 
             let config = {
                 headers: {
@@ -143,8 +141,7 @@ export class backlog extends Component {
     }
     closeModal1=()=>
     {
-        this.setState({show1:true})
-
+        this.setState({show1:false})
     }
     createSprint=()=>{
         let projectID = this.getCookie('projectID')
@@ -197,6 +194,9 @@ export class backlog extends Component {
 
 
     render() {
+        if (!this.getCookie('Token')) {
+            return <Redirect to='/login' />
+        }
         let projectID = this.getCookie('projectID')
         if (!projectID) {
 
@@ -213,13 +213,13 @@ export class backlog extends Component {
                         <Input type="text" placeholder="Find Task in Backlog..." onChange={this.filter.bind(this)}> Search... </Input>
                         </Col>
                         <Col >
-                        <Button variant="outline-secondary" > Create new Task</Button>
+                        <Button variant="outline-secondary" onClick={event => window.location.href='/createTask'}> Create new Task</Button>
                         </Col>
                         <Col >
                         <Button variant="outline-info" onClick={this.show1} > Create new Sprint </Button>
                         </Col>
                         <Col >
-                        <Button variant="outline-success"  > View Runing Sprint </Button>
+                        <Button variant="outline-success" onClick={event => window.location.href='/ViewRunningSprint'} > View Runing Sprint </Button>
                         </Col>
                         <br></br>
                         </Row>
@@ -296,7 +296,7 @@ export class backlog extends Component {
     </Form.Group>
                 </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={this.closeModal}>
+          <Button variant="secondary" onClick={this.closeModal1}>
             Close
           </Button>
         </Modal.Footer>

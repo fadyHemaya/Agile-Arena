@@ -65,12 +65,38 @@ removing=(e)=>{
     )
 
 }
+DeleteSprint=()=>{
+    let config = {
+        headers: {
+            "Authorization": this.getCookie('Token'),
+        }
+    }
+    Axios.delete(url + "/api/sprint/?sprintID=" + this.props.sprint._id, config).then(Tasks => {
+       console.log('refresh')
+        window.location.reload();
+    })
 
+}
+startSprint=()=>{
+    let config = {
+        headers: {
+            "Authorization": this.getCookie('Token'),
+        }
+    }
+    Axios.put(url + "/api/sprint/StartSprint?sprintID=" + this.props.sprint._id,{active:true}, config).then(Tasks => {
+        alert('Activated successfully')
+     })
+    .catch(error=>{
+        alert('Only one Sprint can be active')
+
+    })
+ 
+}
 
   render() {
 
     return (
-      <div class="w-70">
+      <div class="w-70" >
           <Col>
           <Row>
               <Col>
@@ -79,21 +105,19 @@ removing=(e)=>{
           <Col>
           <Button variant="outline-danger" sprintID={this.props.sprint._id} onClick={this.DeleteSprint}>Delete</Button>
           
-          </Col>
-            <Col>
-            {this.props.sprint.active ? ( <Button variant="outline-success" disabled>Activated</Button>):( <Button variant="outline-success">Activate</Button>)}
+            {this.props.sprint.active ? ( <Button variant="outline-success" disabled>Activated</Button>):( <Button sprintID={this.props.sprint._id} variant="outline-success" onClick={this.startSprint}>Activate</Button>)}
 
             </Col>
           </Row>
           <Row>
           {this.state.tasks.map(Task => {
-                                return (<div class="p-2">
+                                return (<div class="p-2" style={{backgroundColor:"grey"}}>
                                     <SprintTask task={Task} remove={this.removing} />
-                                    
                                 </div>)
 
                             })}
               </Row>
+             <br></br>
 
    
           </Col>
