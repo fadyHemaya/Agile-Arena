@@ -60,7 +60,7 @@ getCookie(cname) {
         }
       };
 
-      axios.post(url + "api/user/signup/", body).then(res => {
+      axios.post(url + "/api/user/signup/", body).then(res => {
       let data = "Token "+ res.data.user.token
       document.cookie = "Token="+data;
       window.location.reload();

@@ -17,10 +17,11 @@ const Task = new Schema({
   },
   points:{
     type:Number,
-    required:false
+    required:false,
+    default:3
   },
   priority:{
-      type: String,
+    type: String,
     enum:['High','Medium','Low'],
     default: 'Medium'
   },
