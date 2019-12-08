@@ -4,7 +4,33 @@ const auth = require('../auth');
 const Projects = mongoose.model('Projects');
 const Sprints = mongoose.model('Sprints')
 
-
+router.put('/StartSprint', auth.required, async (req, res, next) => {
+    const {
+      payload: { id }
+    } = req;
+    const projectID = req.query.projectID;
+    const proj = await project.findById(projectID)
+    if (proj.owner != id) {
+      return res.status(422).json({
+        errors:
+          'Unauthorized'
+      });
+    }
+    let Esprints = Sprints.find(o => o.projectID == projectID && o.active === true)
+    if(Esprints)
+    {
+        return res.status(422).json({
+            errors:
+              'Only one sprint can be active'
+          });
+    }
+    else{
+        await Sprints.findByIdAndUpdate(req.query.sprintID,{active:true})
+        return res.status(200).json({
+            Sprint:"Activated successfully"
+        })
+    }
+})
 
 router.post('/', auth.required, async (req, res, next) => {
     const { payload: { id } } = req;
