@@ -22,9 +22,6 @@ export class createTask extends Component {
 
   constructor(props) {
     super(props);
-    document.cookie =
-      "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA4NDg2MjQsImlhdCI6MTU3NTY2NDYyNH0.S8de9qN_M5M9bJRkAHcVZZ_CqNPjXB7VdfkVY0siySU";
-
     this.state = {
       team: []
     };
@@ -32,7 +29,7 @@ export class createTask extends Component {
     let arr = [];
 
     axios
-      .get(url + "api/project/team?projectID=" + this.getCookie("projectID"), {
+      .get(url + "/api/project/team?projectID=" + this.getCookie("projectID"), {
         headers: {
           Authorization: this.getCookie("token")
         }
@@ -40,7 +37,7 @@ export class createTask extends Component {
       .then(res => {
         res.data.team.map(member => {
           axios
-            .get(url + "api/user?userID=" + member.userID, {
+            .get(url + "/api/user?userID=" + member.userID, {
               headers: {
                 Authorization: this.getCookie("token")
               }
@@ -81,7 +78,7 @@ export class createTask extends Component {
       }
     };
     axios
-      .post(url + "api/task?projectID=" + projectID, body, {
+      .post(url + "/api/task?projectID=" + projectID, body, {
         headers: {
           Authorization: this.getCookie("token")
         }

@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Table, Row, Modal, Button, Col, Form } from "react-bootstrap";
 import { IoMdAddCircle } from "react-icons/io";
+import { Redirect } from 'react-router-dom'
 
 const url = require("../config/url");
 
 export class invite extends Component {
   constructor(props) {
     super(props);
-
-    document.cookie =
-      "token=Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhZHkuaGVtYXlhIiwiaWQiOiI1ZGQ4MTJjMTZhYzgxZTMzOGMyMmFiNTkiLCJleHAiOjE1ODA4NDg4MjEsImlhdCI6MTU3NTY2NDgyMX0.XiO3VO9OZ_gRUPapLYoqnAy3ySYJ1MBpLrIU07iNhYY";
 
     this.state = {
       team: [],
@@ -151,6 +149,9 @@ export class invite extends Component {
   };
 
   render() {
+    if (!this.getCookie('Token')) {
+      return <Redirect to='/login' />
+  }
 
     let counter = 1;
     return (

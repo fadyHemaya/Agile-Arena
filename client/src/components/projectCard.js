@@ -48,8 +48,8 @@ export class projectCard extends Component {
     event.preventDefault();
     document.cookie = "projectID=" + this.props.projectID;
     console.log(this.props.projectID);
+    window.location.href='/Backlog'
 
-    //redirect to backlog page...
   };
 
   delete = () => {
@@ -68,7 +68,7 @@ export class projectCard extends Component {
   }
 
   render() {
-    return (
+    return (  
       <div>
         <Card onMouseEnter={this.hoverOn}
           onMouseLeave={this.hoverOff}

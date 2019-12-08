@@ -8,8 +8,8 @@ import invite from './pages/invite'
 import createTask from './pages/createTask'
 import runningSprint from "./pages/RunningSprint"
 import backlog from './pages/backlog'
+import Navbar from'./components/Navbar'
 import './App.css';
-
 
 
 
@@ -24,6 +24,7 @@ function App() {
         crossOrigin="anonymous"
       />
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+      <Navbar></Navbar>
       <Switch>
       <Route exact path="/home" component={home} />
       <Route exact path="/login" component={login} />

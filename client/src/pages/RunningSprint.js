@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import TaskElement from '../components/TaskElement'
-import { Input, Form, Label, Button, Row, Col } from 'reactstrap'
+import { Input, Form, Label, Row, Col } from 'reactstrap'
+import{Button} from 'react-bootstrap'
+import { Redirect } from 'react-router-dom'
+
 const url = require('../config/url')
+
 
 export class tasks extends Component {
     state = {
@@ -13,9 +17,22 @@ export class tasks extends Component {
         TfilteredTasks: [],
         CfilteredTasks: [],
         PfilteredTasks: [],
-
         searchTerm: ''
     };
+    deactivate=()=>{
+        let config = {
+            headers: {
+                "Authorization": this.getCookie('Token'),
+            }
+        }
+        if(this.state.tasks)
+        {
+            console.log(this.state.tasks[0])
+        Axios.put(url + "/api/sprint/?sprintID=" + this.state.tasks[0].sprintID, { sprint: { active: false } }, config).then(res => {
+            window.location.reload();
+        })
+    }
+    }
     getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
@@ -144,7 +161,6 @@ export class tasks extends Component {
 
             let projectID = this.getCookie('projectID')
             if (!projectID) {
-                document.cookie = "projectID=" + "5ddbf50340c94847a43c49f1"
                 return;
             }
 
@@ -154,7 +170,7 @@ export class tasks extends Component {
                 }
             }
 
-            Axios.get(url + "/api/project/getTasksOfProject/?projectID=" + projectID, config).then(Tasks => {
+            Axios.get(url + "/api/project/getActiveTasksOfProject/?projectID=" + projectID, config).then(Tasks => {
                 this.setState({
                     tasks: Tasks.data
 
@@ -176,6 +192,7 @@ export class tasks extends Component {
             });
         } catch (e) {
             console.log(e);
+            return <Redirect to='/login' />
         }
     }
 
@@ -222,6 +239,9 @@ export class tasks extends Component {
 
 
     render() {
+        if (!this.getCookie('Token')) {
+            return <Redirect to='/login' />
+        }
         let projectID = this.getCookie('projectID')
         if (!projectID) {
 
@@ -233,7 +253,14 @@ export class tasks extends Component {
                     <Form>
 
                         <Label>Search</Label>
+                        <Row>
+                            <Col xs lg="10">
                         <Input type="text" placeholder="Find Task..." onChange={this.filter.bind(this)}> Search... </Input>
+                        </Col>
+                        <Col>
+                            <Button onClick={this.deactivate} variant="outline-warning" > Deactivate</Button>
+                        </Col>
+                        </Row>
                         <br></br>
 
 

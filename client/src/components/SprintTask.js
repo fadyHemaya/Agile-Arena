@@ -11,33 +11,13 @@ import {Button} from 'react-bootstrap'
 
 
 import { FaBug, FaLongArrowAltUp, FaTasks, FaFileCode} from 'react-icons/fa'
-import {IoIosAddCircleOutline} from 'react-icons/io'
-import Axios from "axios";
-
-
-const url = require('../config/url')
-
+import {MdCancel} from 'react-icons/md'
 
 export class backlogTask extends Component {
   state = {
     priority: '',
     type: ''
   }
-  getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) === 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
   constructor(props) {
     super(props)
     this.setState({
@@ -68,15 +48,17 @@ export class backlogTask extends Component {
 
     }
   }
-  
+
   render() {
 
     return (
       <div class="w-70" taskID={this.props.task._id}>
         <Card className="rounded-200  w-100 shadow-lg p-3 mb-2 bg-white rounded">
           <CardHeader>
-            <Row>
+              <Row>
             {this.props.task.name}
+            <Col></Col>
+            <MdCancel taskID = {this.props.task._id}onClick={this.props.remove} style={{color:"red",cursor:"pointer"}}></MdCancel>
             </Row>
           </CardHeader>
           <CardBody>
@@ -101,13 +83,7 @@ export class backlogTask extends Component {
             </Row>
           </CardBody>
           <Row>
-              <Col xs lg="10"></Col>
-              <Col>
-            <IoIosAddCircleOutline taskID ={this.props.task._id}onClick={this.props.addToSprint} style={{color:"green",cursor:"pointer"}}> </IoIosAddCircleOutline>
-              </Col>
-              <Col>
-            <Button taskID={this.props.task._id}variant="outline-danger" onClick={this.props.deleteTask}> Delete</Button>
-            </Col>
+              <Col xs lg="11"></Col>
           </Row>
 
         </Card>

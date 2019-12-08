@@ -2,21 +2,44 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const auth = require('../auth');
 const Projects = mongoose.model('Projects');
+const Tasks = mongoose.model('Tasks');
 const Sprints = mongoose.model('Sprints')
+router.get('/', auth.required, async (req, res, next) => {
+    const {
+      payload: { id }
+    } = req;
+    const projectID = req.query.projectID;
+    const proj = await Projects.findById(projectID)
+    let EUser = await proj.team.find(o => o.userID === id && o.activated === true);
+    if (EUser) {
+      return res.status(422).json({
+        errors:
+          'Unauthorized'
+      });
+    }
+  
+    let USprints = await Sprints.find({ projectID: projectID })
+    if (USprints)
+      return res.status(200).json( USprints )
+    else
+      return res.status(422).json({ Error: 'Can not find Sprint' })
+  })
+  
 
 router.put('/StartSprint', auth.required, async (req, res, next) => {
     const {
       payload: { id }
     } = req;
-    const projectID = req.query.projectID;
-    const proj = await project.findById(projectID)
+    const sprint = await Sprints.findById(req.query.sprintID)
+    let projectID = sprint.projectID
+    const proj = await Projects.findById(projectID)
     if (proj.owner != id) {
       return res.status(422).json({
         errors:
           'Unauthorized'
       });
     }
-    let Esprints = Sprints.find(o => o.projectID == projectID && o.active === true)
+    let Esprints = await Sprints.findOne({projectID : projectID ,active : true})
     if(Esprints)
     {
         return res.status(422).json({
@@ -30,6 +53,27 @@ router.put('/StartSprint', auth.required, async (req, res, next) => {
             Sprint:"Activated successfully"
         })
     }
+})
+
+router.put('/', auth.required, async (req, res, next) => {
+    const {
+      payload: { id }
+    } = req;
+    const sprint = await Sprints.findById(req.query.sprintID)
+    const proj = await Projects.findById(sprint.projectID)
+    if (proj.owner != id) {
+      return res.status(422).json({
+        errors:
+          'Unauthorized'
+      });
+    }
+    
+    
+        await Sprints.findByIdAndUpdate(req.query.sprintID,req.body.sprint)
+        return res.status(200).json({
+            Sprint:"Activated successfully"
+        })
+    
 })
 
 router.post('/', auth.required, async (req, res, next) => {
@@ -96,6 +140,7 @@ router.delete('/', auth.required, async (req, res, next) => {
     }
     let finalSprint = await Sprints.findByIdAndRemove(req.query.sprintID)
     if (finalSprint) {
+        await Tasks.update({sprintID:req.query.sprintID},{sprintID:null},{multi: true})
         return res.status(200).json({
 
             Sprint: 'Deleted Successfully'
