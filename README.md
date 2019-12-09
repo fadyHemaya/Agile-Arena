@@ -35,7 +35,7 @@ docker-compose up
 
 ## deployment
 
-click [here](https://google.com) to visit our website
+click [here](https://infinite-caverns-24758.herokuapp.com) to visit our website
 
 
 ## Contributing
