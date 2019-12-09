@@ -126,6 +126,7 @@ export class home extends Component {
           <Row className="justify-content-md-center">
             {this.state.projects.map(element => {
               return (
+                <div className="p-2">
                 <ProjectCard
                   name={element.name}
                   description={element.description}
@@ -134,6 +135,7 @@ export class home extends Component {
                   userID = {this.state.userID}
                   remove = {this.remove}
                 />
+                </div>
               );
             })}
           </Row>
