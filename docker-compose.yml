@@ -1,40 +1,34 @@
-version: "2"
+version: "3"
 services:
-    client:
-        image: webapp-client
-        restart: always
+    frontend:
+        container_name: awesome_web
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        image: fady/awesome_web
         ports:
             - "3000:3000"
         volumes:
-            - ./client:/client
-            - /client/node_modules
-        links:
-            - api
-        networks:
-            webappnetwork
-    api:
-        image: webapp-api
-        restart: always
+            - ./client:/usr/src/app
+            - /usr/src/app/node_modules
+        depends_on: 
+            - mongodb
+    backend:
+        container_name: awesome_server
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        image: fady/awesome_server
         ports:
             - "3001:3001"
         volumes:
-            - ./api:/api
-            - /api/node_modules
-        depends_on:
-            - mongodb
-        networks:
-            webappnetwork
+            - ./server:/usr/src/app
+            - /usr/src/app/node_modules
+            
     mongodb:
+        container_name: mongo
         image: mongo
-        restart: always
-        container_name: mongodb
         volumes:
-            - ./data-node:/data/db
+                - ./data:/data/db
         ports:
             - 27017:27017
-        command: mongod --noauth --smallfiles
-        networks:
-            - webappnetwork
-  networks:
-    webappnetwork:
-        driver: bridge
