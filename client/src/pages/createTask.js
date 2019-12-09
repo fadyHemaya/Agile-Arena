@@ -31,7 +31,7 @@ export class createTask extends Component {
     axios
       .get(url + "/api/project/team?projectID=" + this.getCookie("projectID"), {
         headers: {
-          Authorization: this.getCookie("token")
+          Authorization: this.getCookie("Token")
         }
       })
       .then(res => {
@@ -39,7 +39,7 @@ export class createTask extends Component {
           axios
             .get(url + "/api/user?userID=" + member.userID, {
               headers: {
-                Authorization: this.getCookie("token")
+                Authorization: this.getCookie("Token")
               }
             })
             .then(result => {
@@ -80,7 +80,7 @@ export class createTask extends Component {
     axios
       .post(url + "/api/task?projectID=" + projectID, body, {
         headers: {
-          Authorization: this.getCookie("token")
+          Authorization: this.getCookie("Token")
         }
       })
       .then(res => {
