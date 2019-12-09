@@ -22,7 +22,7 @@ export class home extends Component {
     axios
       .get(url + "/api/project", {
         headers: {
-          Authorization: this.getCookie("token")
+          Authorization: this.getCookie("Token")
         }
       })
       .then(res => {
@@ -34,7 +34,7 @@ export class home extends Component {
 
       axios.get(url + "/api/user/current", {
         headers: {
-          'Authorization': this.getCookie('token')
+          'Authorization': this.getCookie('Token')
         }
       })
       .then(res => {
@@ -84,7 +84,7 @@ export class home extends Component {
 
     axios.post(url + '/api/project/', body , {
       headers:{
-        'Authorization': this.getCookie('token')
+        'Authorization': this.getCookie('Token')
       }
     }).then(res => {
       console.log(res)
@@ -182,7 +182,7 @@ export class home extends Component {
           </Row>
         </Col>
 
-        <Chart />
+        {/* <Chart /> */}
 
         
       </div>

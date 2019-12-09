@@ -61,7 +61,7 @@ export class projectCard extends Component {
       event.preventDefault()
       axios.delete(url+'api/project?projectID='+this.props.projectID, {
            headers:{
-        'Authorization': this.getCookie('token')
+        'Authorization': this.getCookie('Token')
       }
     }).then(this.props.remove(this.props.projectID)).catch(err => console.log(err))  
 
