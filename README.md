@@ -35,7 +35,7 @@ docker-compose up
 
 ## deployment
 
-click [here](https://ramy.com) to visit our website
+click [here](https://google.com) to visit our website
 
 
 ## Contributing
