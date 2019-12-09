@@ -20,7 +20,7 @@ export class invite extends Component {
     axios
       .get(url + "api/project/team?projectID=" + this.getCookie("projectID"), {
         headers: {
-          Authorization: this.getCookie("token")
+          Authorization: this.getCookie("Token")
         }
       })
       .then(res => {
@@ -29,7 +29,7 @@ export class invite extends Component {
           axios
             .get(url + "api/user?userID=" + member.userID, {
               headers: {
-                Authorization: this.getCookie("token")
+                Authorization: this.getCookie("Token")
               }
             })
             .then(result => {
@@ -91,7 +91,7 @@ export class invite extends Component {
         {},
         {
           headers: {
-            Authorization: this.getCookie("token")
+            Authorization: this.getCookie("Token")
           }
         }
       )
@@ -112,7 +112,7 @@ export class invite extends Component {
     event.preventDefault();
     this.handleClose();
 
-    const token = this.getCookie("token");
+    const token = this.getCookie("Token");
 
     axios
       .put(
