@@ -181,6 +181,7 @@ export class home extends Component {
           </Row>
         </Col>
 
+        {/* <Chart /> */}
 
         
       </div>
