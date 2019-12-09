@@ -18,6 +18,12 @@ npm i
 cd ../client 
 npm i
 ```
+## Running the project
+either by running both client and server by the following commands
+$ cd client
+$ npm start
+$ cd server
+$ npm start
 
 
 ## deployment
