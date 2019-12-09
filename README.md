@@ -18,11 +18,24 @@ npm i
 cd ../client 
 npm i
 ```
+## Running the project
+either by running both client and server by the following commands
+
+ ```bash
+ cd client
+ npm start
+ cd server 
+ npm start
+ ```
+or by using docker with this command
+```bash
+docker-compose up
+```
 
 
 ## deployment
 
-click [here](https://ramy.com) to visit our website
+click [here](https://google.com) to visit our website
 
 
 ## Contributing
