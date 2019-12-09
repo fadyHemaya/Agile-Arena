@@ -21,10 +21,16 @@ npm i
 ## Running the project
 either by running both client and server by the following commands
 
- $ cd client
- $ npm start
- $ cd server
- $ npm start
+ ```bash
+ cd client
+ npm start
+ cd server 
+ npm start
+ ```
+or by using docker with this command
+```bash
+docker-compose up
+```
 
 
 ## deployment
