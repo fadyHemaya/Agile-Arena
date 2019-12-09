@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import ProjectCard from "../components/projectCard";
 import { Row, Col, Modal, Form, Button } from "react-bootstrap";
-import Chart from '../components/chart'
 import { Redirect } from 'react-router-dom'
 
 const url = require("../config/url");
@@ -182,7 +181,6 @@ export class home extends Component {
           </Row>
         </Col>
 
-        <Chart />
 
         
       </div>

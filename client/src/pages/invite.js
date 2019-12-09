@@ -18,7 +18,7 @@ export class invite extends Component {
     let arr = [];
 
     axios
-      .get(url + "api/project/team?projectID=" + this.getCookie("projectID"), {
+      .get(url + "/api/project/team?projectID=" + this.getCookie("projectID"), {
         headers: {
           Authorization: this.getCookie("Token")
         }
@@ -27,7 +27,7 @@ export class invite extends Component {
           console.log(res.data.team)
         res.data.team.map(member => {
           axios
-            .get(url + "api/user?userID=" + member.userID, {
+            .get(url + "/api/user?userID=" + member.userID, {
               headers: {
                 Authorization: this.getCookie("Token")
               }
@@ -84,7 +84,7 @@ export class invite extends Component {
     axios
       .put(
         url +
-          "api/user/remove?projectID=" +
+          "/api/user/remove?projectID=" +
           this.getCookie("projectID") +
           "&userID=" +
           userID,
@@ -117,7 +117,7 @@ export class invite extends Component {
     axios
       .put(
         url +
-          "api/user/invite?projectID=" +
+          "/api/user/invite?projectID=" +
           this.getCookie("projectID") +
           "&email=" +
           document.getElementById("email").value,
